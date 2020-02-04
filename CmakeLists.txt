@@ -1,0 +1,23 @@
+
+cmake_minimum_required(VERSION 3.10)
+
+
+# If we call cmake with -DTDD=true we enable the TDD features
+# of this build.
+SET(TDD FALSE CACHE BOOL "Enable local TDD development cycle")
+
+# If the TDD flag was not set we should use the esp32 native toolchain
+if( NOT TDD )
+    # This includes the esp32 toolchain's native CMake file
+    # Only necessary for building and flashing to the esp32 device
+    include($ENV{IDF_PATH}/tools/cmake/project.cmake)
+endif()
+
+# Set the project name
+# TODO: can we get the version from the build?
+project(blinkin-lights VERSION v0.0.0)
+
+IF( TDD )
+    # This includes the build steps necessary for test driving our code
+    include(tdd.cmake)
+ENDIF()
